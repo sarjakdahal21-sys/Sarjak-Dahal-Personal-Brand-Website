@@ -176,6 +176,90 @@
       opacity: 1;
     }
 
+    .ambient-system {
+      position: fixed;
+      inset: 0;
+      z-index: 0;
+      pointer-events: none;
+      overflow: hidden;
+      opacity: 0.9;
+    }
+
+    .ambient-system__ring,
+    .ambient-system__beam,
+    .ambient-system__node {
+      position: absolute;
+      border-radius: 50%;
+    }
+
+    .ambient-system__ring {
+      width: min(62vw, 760px);
+      aspect-ratio: 1;
+      border: 1px solid rgba(44, 31, 26, 0.08);
+      box-shadow: inset 0 0 0 1px rgba(196, 138, 106, 0.06);
+      animation: orbitSpin 55s linear infinite;
+    }
+
+    .ambient-system__ring--one {
+      top: 8vh;
+      right: -22vw;
+    }
+
+    .ambient-system__ring--two {
+      bottom: -32vh;
+      left: -18vw;
+      width: min(58vw, 680px);
+      animation-direction: reverse;
+      animation-duration: 64s;
+    }
+
+    .ambient-system__beam {
+      width: 46vw;
+      height: 1px;
+      border-radius: 999px;
+      background: linear-gradient(90deg, transparent, rgba(196, 138, 106, 0.24), transparent);
+      transform: rotate(-22deg);
+      animation: beamDrift 10s var(--ease) infinite;
+    }
+
+    .ambient-system__beam--one {
+      top: 26vh;
+      left: 4vw;
+    }
+
+    .ambient-system__beam--two {
+      right: 6vw;
+      bottom: 22vh;
+      animation-delay: 2s;
+    }
+
+    .ambient-system__node {
+      width: 11px;
+      height: 11px;
+      background: var(--support);
+      box-shadow: 0 0 0 9px rgba(63, 156, 107, 0.09), 0 0 30px rgba(63, 156, 107, 0.3);
+      animation: nodeFloat 6s var(--ease) infinite;
+    }
+
+    .ambient-system__node--one {
+      top: 18vh;
+      left: 17vw;
+    }
+
+    .ambient-system__node--two {
+      top: 58vh;
+      right: 13vw;
+      background: var(--accent);
+      box-shadow: 0 0 0 9px rgba(196, 138, 106, 0.11), 0 0 30px rgba(196, 138, 106, 0.34);
+      animation-delay: 1.4s;
+    }
+
+    .ambient-system__node--three {
+      bottom: 16vh;
+      left: 38vw;
+      animation-delay: 2.8s;
+    }
+
     .site-header {
       position: sticky;
       top: 0;
@@ -289,9 +373,21 @@
     }
 
     .section {
+      position: relative;
       width: min(100% - 32px, var(--max));
       margin: 0 auto;
       padding: clamp(70px, 10vw, 128px) 0;
+    }
+
+    .section::before {
+      content: "";
+      position: absolute;
+      top: clamp(18px, 4vw, 46px);
+      right: 0;
+      width: min(28vw, 220px);
+      height: 1px;
+      background: linear-gradient(90deg, transparent, rgba(196, 138, 106, 0.48));
+      opacity: 0.76;
     }
 
     .section--hero {
@@ -302,11 +398,53 @@
       padding-bottom: clamp(54px, 8vw, 84px);
     }
 
+    .section--hero::before {
+      display: none;
+    }
+
     .hero {
+      position: relative;
       display: grid;
       grid-template-columns: minmax(0, 1.08fr) minmax(320px, 0.92fr);
       align-items: center;
       gap: clamp(36px, 6vw, 78px);
+    }
+
+    .hero::before {
+      content: "";
+      position: absolute;
+      inset: -8% -4% auto;
+      height: 62%;
+      z-index: -1;
+      border-radius: 50%;
+      background:
+        radial-gradient(circle at 18% 42%, rgba(196, 138, 106, 0.18), transparent 22%),
+        radial-gradient(circle at 74% 34%, rgba(63, 156, 107, 0.14), transparent 26%),
+        linear-gradient(90deg, transparent, rgba(255, 253, 252, 0.52), transparent);
+      filter: blur(2px);
+    }
+
+    .hero-kicker {
+      display: grid;
+      grid-template-columns: repeat(3, max-content);
+      gap: 8px;
+      margin: 0 0 18px;
+    }
+
+    .hero-kicker span {
+      display: inline-flex;
+      align-items: center;
+      min-height: 30px;
+      border: 1px solid rgba(44, 31, 26, 0.14);
+      border-radius: 999px;
+      background: rgba(255, 253, 252, 0.68);
+      color: rgba(44, 31, 26, 0.72);
+      padding: 6px 11px 7px;
+      font-size: 0.72rem;
+      font-weight: 780;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      box-shadow: 0 10px 24px rgba(26, 18, 15, 0.05);
     }
 
     .eyebrow {
@@ -523,6 +661,19 @@
       perspective: 1000px;
     }
 
+    .brand-orbit__halo {
+      position: absolute;
+      inset: 0;
+      z-index: 0;
+      border-radius: 50%;
+      background:
+        conic-gradient(from 120deg, transparent, rgba(196, 138, 106, 0.28), transparent 38%, rgba(63, 156, 107, 0.2), transparent 72%),
+        radial-gradient(circle, rgba(255, 253, 252, 0.42), transparent 58%);
+      filter: blur(10px);
+      opacity: 0.7;
+      animation: orbitSpin 40s linear infinite reverse;
+    }
+
     .brand-orbit::before,
     .brand-orbit::after {
       content: "";
@@ -612,6 +763,44 @@
       transform-origin: left center;
       animation: signalPulse 3.8s var(--ease) infinite;
       animation-delay: var(--signal-delay, 0ms);
+    }
+
+    .orbit-chip {
+      position: absolute;
+      z-index: 4;
+      display: inline-flex;
+      align-items: center;
+      min-height: 34px;
+      border: 1px solid rgba(44, 31, 26, 0.14);
+      border-radius: 999px;
+      background: rgba(255, 253, 252, 0.84);
+      color: var(--surface);
+      padding: 8px 12px 9px;
+      font-size: 0.74rem;
+      font-weight: 800;
+      line-height: 1;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      box-shadow: 0 14px 34px rgba(26, 18, 15, 0.08);
+      backdrop-filter: blur(14px);
+      animation: nodeFloat 5.8s var(--ease) infinite;
+    }
+
+    .orbit-chip--one {
+      top: 9%;
+      right: 22%;
+    }
+
+    .orbit-chip--two {
+      left: 2%;
+      top: 48%;
+      animation-delay: 1.5s;
+    }
+
+    .orbit-chip--three {
+      right: 2%;
+      bottom: 26%;
+      animation-delay: 3s;
     }
 
     .profile-photo {
@@ -848,7 +1037,10 @@
     .dark-band {
       width: 100%;
       background:
+        linear-gradient(120deg, rgba(250, 245, 241, 0.05) 0 1px, transparent 1px 18%),
+        linear-gradient(60deg, transparent 0 68%, rgba(196, 138, 106, 0.1) 68% 68.2%, transparent 68.2%),
         radial-gradient(circle at top right, rgba(196, 138, 106, 0.22), transparent 34rem),
+        radial-gradient(circle at left center, rgba(63, 156, 107, 0.12), transparent 30rem),
         linear-gradient(180deg, var(--surface), #120c0a);
       color: var(--light);
     }
@@ -893,6 +1085,14 @@
       transition: transform 360ms var(--ease), border-color 360ms var(--ease), background 360ms var(--ease);
     }
 
+    .post-card:nth-child(2) {
+      transform: translateY(32px);
+    }
+
+    .post-card:nth-child(3) {
+      transform: translateY(-18px);
+    }
+
     .post-card::before {
       content: "";
       position: absolute;
@@ -917,11 +1117,19 @@
     }
 
     .post-card:hover {
-      transform: translateY(-8px);
+      transform: translateY(-8px) rotate(-0.6deg);
       border-color: rgba(196, 138, 106, 0.4);
       background:
         linear-gradient(160deg, rgba(250, 245, 241, 0.14), rgba(250, 245, 241, 0.04)),
         rgba(250, 245, 241, 0.06);
+    }
+
+    .post-card:nth-child(2):hover {
+      transform: translateY(22px) rotate(0.6deg);
+    }
+
+    .post-card:nth-child(3):hover {
+      transform: translateY(-28px) rotate(-0.6deg);
     }
 
     .post-card:hover::before {
@@ -977,6 +1185,32 @@
     .post-card p {
       color: rgba(250, 245, 241, 0.7);
       line-height: 1.68;
+    }
+
+    .post-card__visual {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 7px;
+      margin: 28px 0 0;
+    }
+
+    .post-card__visual span {
+      min-height: 42px;
+      border: 1px solid rgba(250, 245, 241, 0.1);
+      border-radius: 6px;
+      background:
+        linear-gradient(145deg, rgba(250, 245, 241, 0.14), rgba(250, 245, 241, 0.03)),
+        rgba(250, 245, 241, 0.04);
+      transform: translateY(var(--lift, 0));
+      transition: transform 320ms var(--ease), background 320ms var(--ease), border-color 320ms var(--ease);
+    }
+
+    .post-card:hover .post-card__visual span {
+      transform: translateY(calc(var(--lift, 0) - 8px));
+      border-color: rgba(196, 138, 106, 0.34);
+      background:
+        linear-gradient(145deg, rgba(196, 138, 106, 0.22), rgba(63, 156, 107, 0.08)),
+        rgba(250, 245, 241, 0.05);
     }
 
     .post-card__footer {
@@ -1156,6 +1390,45 @@
     .method-stat > * {
       position: relative;
       z-index: 1;
+    }
+
+    .signal-console {
+      display: grid;
+      gap: 12px;
+      margin-top: 24px;
+      border-top: 1px solid rgba(250, 245, 241, 0.12);
+      padding-top: 24px;
+    }
+
+    .signal-console__row {
+      display: grid;
+      grid-template-columns: 78px 1fr;
+      gap: 12px;
+      align-items: center;
+      color: rgba(250, 245, 241, 0.58);
+      font-size: 0.72rem;
+      font-weight: 800;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+    }
+
+    .signal-console__track {
+      position: relative;
+      height: 7px;
+      overflow: hidden;
+      border-radius: 999px;
+      background: rgba(250, 245, 241, 0.12);
+    }
+
+    .signal-console__track::after {
+      content: "";
+      position: absolute;
+      inset: 0 auto 0 0;
+      width: var(--track, 74%);
+      border-radius: inherit;
+      background: linear-gradient(90deg, var(--support), var(--accent));
+      animation: signalPulse 4.6s var(--ease) infinite;
+      animation-delay: var(--track-delay, 0ms);
     }
 
     .method-stat strong {
@@ -1373,6 +1646,30 @@
       }
     }
 
+    @keyframes beamDrift {
+      0%,
+      100% {
+        transform: translate3d(-2vw, 0, 0) rotate(-22deg);
+        opacity: 0.28;
+      }
+
+      50% {
+        transform: translate3d(5vw, 2vh, 0) rotate(-22deg);
+        opacity: 0.78;
+      }
+    }
+
+    @keyframes nodeFloat {
+      0%,
+      100% {
+        transform: translate3d(0, 0, 0);
+      }
+
+      50% {
+        transform: translate3d(0, -12px, 0);
+      }
+    }
+
     [data-reveal] {
       opacity: 0;
       transform: translateY(24px);
@@ -1461,9 +1758,17 @@
       .hero__meta,
       .principles,
       .section-heading,
+      .hero-kicker,
       .post-grid,
       .footer-inner {
         grid-template-columns: 1fr;
+      }
+
+      .post-card:nth-child(2),
+      .post-card:nth-child(3),
+      .post-card:nth-child(2):hover,
+      .post-card:nth-child(3):hover {
+        transform: none;
       }
 
       .hero__actions,
@@ -1554,8 +1859,10 @@
 
       .brand-orbit::before,
       .brand-orbit::after,
+      .brand-orbit__halo,
       .orbit-line,
-      .hero-signal {
+      .hero-signal,
+      .orbit-chip {
         display: none;
       }
 
@@ -1570,7 +1877,8 @@
     }
 
     @media (pointer: coarse), (max-width: 900px) {
-      .cursor-glow {
+      .cursor-glow,
+      .ambient-system {
         display: none;
       }
     }
@@ -1600,6 +1908,15 @@
   <a class="skip-link" href="#main">Skip to content</a>
   <div class="progress" aria-hidden="true"><span class="progress__bar"></span></div>
   <div class="cursor-glow" aria-hidden="true"></div>
+  <div class="ambient-system" aria-hidden="true">
+    <span class="ambient-system__ring ambient-system__ring--one"></span>
+    <span class="ambient-system__ring ambient-system__ring--two"></span>
+    <span class="ambient-system__beam ambient-system__beam--one"></span>
+    <span class="ambient-system__beam ambient-system__beam--two"></span>
+    <span class="ambient-system__node ambient-system__node--one"></span>
+    <span class="ambient-system__node ambient-system__node--two"></span>
+    <span class="ambient-system__node ambient-system__node--three"></span>
+  </div>
 
   <header class="site-header">
     <nav class="nav" aria-label="Primary navigation">
@@ -1621,6 +1938,11 @@
     <section id="hero" class="section section--hero" data-section>
       <div class="hero">
         <div class="hero__content">
+          <div class="hero-kicker" aria-hidden="true" data-reveal>
+            <span>Signal</span>
+            <span>Structure</span>
+            <span>Verification</span>
+          </div>
           <p class="eyebrow" data-reveal>ACCA | AI Literacy | Finance Education</p>
           <h1 data-reveal style="--delay: 80ms;">Practical AI for educators & finance professionals.</h1>
           <p class="hero__lead" data-reveal style="--delay: 160ms;">
@@ -1657,7 +1979,11 @@
         </div>
 
         <aside class="brand-orbit" aria-label="Brand portrait" data-reveal style="--delay: 140ms;">
+          <div class="brand-orbit__halo" aria-hidden="true"></div>
           <div class="orbit-line" aria-hidden="true"></div>
+          <span class="orbit-chip orbit-chip--one" aria-hidden="true">AI literacy</span>
+          <span class="orbit-chip orbit-chip--two" aria-hidden="true">Finance lens</span>
+          <span class="orbit-chip orbit-chip--three" aria-hidden="true">Clear systems</span>
           <div class="hero-signal hero-signal--left" aria-hidden="true">
             <span style="--fill: 78%;"></span>
             <span style="--fill: 54%; --signal-delay: 160ms;"></span>
@@ -1755,6 +2081,12 @@
               </div>
               <h3>AI concept in one visual framework</h3>
               <p>A structured post that turns one technical idea into a clean sequence: definition, business use, risk, and responsible next step.</p>
+              <div class="post-card__visual" aria-hidden="true">
+                <span style="--lift: 8px;"></span>
+                <span style="--lift: -4px;"></span>
+                <span style="--lift: 14px;"></span>
+                <span style="--lift: 2px;"></span>
+              </div>
             </div>
             <div class="post-card__footer">
               <span>Best for: students and professionals who need a usable mental model.</span>
@@ -1770,6 +2102,12 @@
               </div>
               <h3>Automation walkthrough for finance tasks</h3>
               <p>A calm screen-led explanation showing how an AI-assisted workflow can support analysis, documentation, or review.</p>
+              <div class="post-card__visual" aria-hidden="true">
+                <span style="--lift: 0;"></span>
+                <span style="--lift: 12px;"></span>
+                <span style="--lift: -5px;"></span>
+                <span style="--lift: 8px;"></span>
+              </div>
             </div>
             <div class="post-card__footer">
               <span>Best for: finance learners who want process clarity before tooling.</span>
@@ -1785,6 +2123,12 @@
               </div>
               <h3>Verified prompt, clear limitation</h3>
               <p>A concise teaching note that explains when a prompt helps, when it fails, and what evidence the user should check.</p>
+              <div class="post-card__visual" aria-hidden="true">
+                <span style="--lift: 16px;"></span>
+                <span style="--lift: 4px;"></span>
+                <span style="--lift: -4px;"></span>
+                <span style="--lift: 10px;"></span>
+              </div>
             </div>
             <div class="post-card__footer">
               <span>Best for: practical adoption without casual overconfidence.</span>
@@ -1827,6 +2171,20 @@
         <aside class="method-stat" data-reveal style="--delay: 130ms;">
           <strong>4</strong>
           <span>Core values guide the content system: practical, calm, structured, and premium.</span>
+          <div class="signal-console" aria-hidden="true">
+            <div class="signal-console__row">
+              <span>Clarity</span>
+              <span class="signal-console__track" style="--track: 92%;"></span>
+            </div>
+            <div class="signal-console__row">
+              <span>Evidence</span>
+              <span class="signal-console__track" style="--track: 78%; --track-delay: 220ms;"></span>
+            </div>
+            <div class="signal-console__row">
+              <span>Usefulness</span>
+              <span class="signal-console__track" style="--track: 86%; --track-delay: 440ms;"></span>
+            </div>
+          </div>
         </aside>
       </div>
     </section>
