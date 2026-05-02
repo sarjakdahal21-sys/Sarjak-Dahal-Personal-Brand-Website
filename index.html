@@ -955,6 +955,11 @@
       text-wrap: balance;
     }
 
+    #contact .contact__actions {
+      margin-top: 16px;
+      gap: 14px;
+    }
+
     .about-grid {
       display: grid;
       grid-template-columns: minmax(0, 0.78fr) minmax(0, 1.22fr);
@@ -1521,10 +1526,13 @@
     }
 
     .method-stat__caption {
-      margin-top: 12px;
-      color: rgba(250, 245, 241, 0.78);
-      font-size: 0.92rem;
-      line-height: 1.45;
+      margin-top: 16px;
+      color: rgba(250, 245, 241, 0.9);
+      font-size: clamp(1.02rem, 1.35vw, 1.2rem);
+      font-weight: 700;
+      line-height: 1.35;
+      letter-spacing: 0.01em;
+      text-wrap: balance;
     }
 
     .contact-grid {
@@ -2333,8 +2341,7 @@
           <p class="eyebrow" data-reveal>YOU CAN FIND ME HERE</p>
           <h2 data-reveal style="--delay: 80ms;">Learn AI with a human. I share clear lessons for finance professionals, educators, students, and curious learners who want to understand AI without getting lost in hype.</h2>
           <p data-reveal style="--delay: 160ms;">I teach AI, not through AI.</p>
-          <p data-reveal style="--delay: 200ms;">That means the ideas I share are selected, verified, edited, and written with human judgment. AI may be part of the workflow, but it is never the author of my point of view.</p>
-          <div class="contact__actions" data-reveal style="--delay: 240ms;">
+          <div class="contact__actions" data-reveal style="--delay: 200ms;">
             <a class="button button--primary" href="https://www.linkedin.com/in/sarjak-dahal-72773622a/" target="_blank" rel="noopener noreferrer">Connect on LinkedIn</a>
             <a class="button button--ghost" href="https://www.youtube.com/@sarjakdahal6572" target="_blank" rel="noopener noreferrer">Watch on YouTube</a>
             <a class="button button--ghost" href="mailto:sarjakdahal21@gmail.com">Send an Email</a>
