@@ -1511,6 +1511,15 @@
       line-height: 1.55;
     }
 
+    .method-stat__image {
+      width: 100%;
+      border-radius: calc(var(--radius) - 2px);
+      border: 1px solid rgba(250, 245, 241, 0.2);
+      object-fit: cover;
+      aspect-ratio: 1 / 1;
+      box-shadow: 0 16px 40px rgba(0, 0, 0, 0.25);
+    }
+
     .contact-grid {
       display: grid;
       grid-template-columns: minmax(0, 1fr) minmax(320px, 0.78fr);
@@ -2306,22 +2315,7 @@
         </article>
 
         <aside class="method-stat" data-reveal style="--delay: 130ms;">
-          <strong>3</strong>
-          <span>I teach AI, not through AI.</span>
-          <div class="signal-console" aria-hidden="true">
-            <div class="signal-console__row">
-              <span>Judgment</span>
-              <span class="signal-console__track" style="--track: 92%;"></span>
-            </div>
-            <div class="signal-console__row">
-              <span>Context</span>
-              <span class="signal-console__track" style="--track: 78%; --track-delay: 220ms;"></span>
-            </div>
-            <div class="signal-console__row">
-              <span>Responsibility</span>
-              <span class="signal-console__track" style="--track: 86%; --track-delay: 440ms;"></span>
-            </div>
-          </div>
+          <img class="method-stat__image" src="./assets/acca-award-receipt.jpg" alt="Sarjak Dahal receiving ACCA award recognition">
         </aside>
       </div>
     </section>
