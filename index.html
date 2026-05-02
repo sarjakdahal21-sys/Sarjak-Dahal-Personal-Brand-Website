@@ -1531,14 +1531,17 @@
     }
 
     .method-stat__caption {
-      margin-top: 16px;
+      margin-top: auto;
+      margin-bottom: 18px;
+      padding-right: clamp(140px, 22vw, 220px);
       color: rgba(250, 245, 241, 0.9);
-      max-width: 28ch;
-      font-size: clamp(1.12rem, 1.35vw, 1.34rem);
-      font-weight: 760;
-      line-height: 1.22;
-      letter-spacing: 0.012em;
-      text-wrap: balance;
+      max-width: none;
+      width: 100%;
+      font-size: clamp(1.8rem, 3.4vw, 3.15rem);
+      font-weight: 780;
+      line-height: 1.08;
+      letter-spacing: 0.006em;
+      text-wrap: pretty;
     }
 
     .contact-grid {
