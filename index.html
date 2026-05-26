@@ -1770,14 +1770,34 @@
 
     [data-reveal] {
       opacity: 0;
-      transform: translateY(24px);
-      transition: opacity 720ms var(--ease), transform 720ms var(--ease);
+      transform: translate3d(0, 34px, 0) rotateX(4deg);
+      transform-origin: center top;
+      transition: opacity 780ms var(--ease), transform 780ms var(--ease), filter 780ms var(--ease);
       transition-delay: var(--delay, 0ms);
+      filter: blur(8px);
+      will-change: opacity, transform, filter;
     }
 
     [data-reveal].is-visible {
       opacity: 1;
-      transform: translateY(0);
+      transform: translate3d(0, 0, 0) rotateX(0);
+      filter: blur(0);
+    }
+
+    [data-section] {
+      transform-style: preserve-3d;
+      transition: transform 520ms var(--ease), opacity 520ms var(--ease);
+      will-change: transform;
+    }
+
+    .section-depth {
+      transform: perspective(1200px) translate3d(0, var(--section-shift, 0px), 0) rotateX(var(--section-tilt, 0deg));
+    }
+
+    .premium-tilt {
+      transform-style: preserve-3d;
+      transition: transform 260ms var(--ease), box-shadow 260ms var(--ease), border-color 260ms var(--ease);
+      will-change: transform;
     }
 
     @media (max-width: 1040px) {
@@ -2416,6 +2436,7 @@
       const navLinks = [...document.querySelectorAll(".nav__links a")];
       const cursorGlow = document.querySelector(".cursor-glow");
       const tiltTargets = [...document.querySelectorAll(".brand-orbit")];
+      const premiumTiltItems = [...document.querySelectorAll(".meta-tile, .principle, .post-card, .method-card, .method-stat, .contact-card, .quote-panel")];
       const postToggles = [...document.querySelectorAll(".post-card__cue")];
 
       const setProgress = () => {
@@ -2487,6 +2508,25 @@
       }
 
       if (!prefersReducedMotion && window.matchMedia("(pointer: fine)").matches) {
+        sections.forEach((section) => section.classList.add("section-depth"));
+
+        const updateSectionDepth = () => {
+          const viewportCenter = window.innerHeight / 2;
+
+          sections.forEach((section) => {
+            const rect = section.getBoundingClientRect();
+            const sectionCenter = rect.top + rect.height / 2;
+            const distance = (sectionCenter - viewportCenter) / window.innerHeight;
+            const clamped = Math.max(-1, Math.min(1, distance));
+            section.style.setProperty("--section-shift", `${clamped * -16}px`);
+            section.style.setProperty("--section-tilt", `${clamped * 2.4}deg`);
+          });
+        };
+
+        updateSectionDepth();
+        window.addEventListener("scroll", updateSectionDepth, { passive: true });
+        window.addEventListener("resize", updateSectionDepth);
+
         tiltTargets.forEach((target) => {
           const topNote = target.querySelector(".floating-note--top");
           const bottomNote = target.querySelector(".floating-note--bottom");
@@ -2504,6 +2544,21 @@
           target.addEventListener("pointerleave", () => {
             if (topNote) topNote.style.transform = "";
             if (bottomNote) bottomNote.style.transform = "";
+          });
+        });
+
+        premiumTiltItems.forEach((item) => {
+          item.classList.add("premium-tilt");
+
+          item.addEventListener("pointermove", (event) => {
+            const rect = item.getBoundingClientRect();
+            const x = (event.clientX - rect.left) / rect.width - 0.5;
+            const y = (event.clientY - rect.top) / rect.height - 0.5;
+            item.style.transform = `perspective(900px) translateY(-4px) rotateX(${y * -4}deg) rotateY(${x * 5}deg)`;
+          }, { passive: true });
+
+          item.addEventListener("pointerleave", () => {
+            item.style.transform = "";
           });
         });
       }
