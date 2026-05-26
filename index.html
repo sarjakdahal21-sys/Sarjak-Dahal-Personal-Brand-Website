@@ -665,6 +665,119 @@
       perspective: 1000px;
     }
 
+    .depth-scene {
+      position: absolute;
+      inset: 2% -2% 0;
+      z-index: 1;
+      transform-style: preserve-3d;
+      pointer-events: none;
+      transition: transform 500ms var(--ease);
+      will-change: transform;
+    }
+
+    .depth-grid {
+      position: absolute;
+      inset: 16% 4% 10%;
+      border-radius: 50%;
+      background:
+        linear-gradient(rgba(44, 31, 26, 0.1) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(44, 31, 26, 0.08) 1px, transparent 1px);
+      background-size: 34px 34px;
+      mask-image: radial-gradient(circle, rgba(0, 0, 0, 0.72), transparent 68%);
+      opacity: 0.42;
+      transform: translateZ(-90px) rotateX(66deg);
+    }
+
+    .depth-ring {
+      position: absolute;
+      inset: 11%;
+      border: 1px solid rgba(196, 138, 106, 0.26);
+      border-radius: 50%;
+      transform: translateZ(18px) rotateX(58deg) rotateZ(8deg);
+      animation: depthRingSpin 34s linear infinite;
+    }
+
+    .depth-ring::after {
+      content: "";
+      position: absolute;
+      inset: 42%;
+      border-radius: 50%;
+      background: var(--support);
+      box-shadow: 0 0 0 9px rgba(63, 156, 107, 0.12), 0 0 28px rgba(63, 156, 107, 0.28);
+    }
+
+    .depth-card {
+      position: absolute;
+      display: grid;
+      gap: 9px;
+      width: 138px;
+      padding: 13px;
+      border: 1px solid rgba(44, 31, 26, 0.12);
+      border-radius: var(--radius);
+      background: rgba(255, 253, 252, 0.72);
+      box-shadow: 0 20px 48px rgba(26, 18, 15, 0.1);
+      backdrop-filter: blur(16px);
+      transform-style: preserve-3d;
+      animation: depthFloat 7s var(--ease) infinite;
+    }
+
+    .depth-card::before {
+      content: attr(data-label);
+      color: var(--secondary);
+      font-size: 0.64rem;
+      font-weight: 850;
+      letter-spacing: 0.09em;
+      text-transform: uppercase;
+    }
+
+    .depth-card span {
+      height: 6px;
+      border-radius: 999px;
+      background: rgba(139, 111, 98, 0.2);
+      overflow: hidden;
+    }
+
+    .depth-card span::after {
+      content: "";
+      display: block;
+      width: var(--fill, 72%);
+      height: 100%;
+      border-radius: inherit;
+      background: linear-gradient(90deg, var(--support), var(--accent));
+      animation: signalPulse 4.2s var(--ease) infinite;
+    }
+
+    .depth-card--one {
+      top: 7%;
+      left: 9%;
+      transform: translateZ(82px) rotate(-7deg);
+    }
+
+    .depth-card--two {
+      top: 16%;
+      right: 3%;
+      transform: translateZ(54px) rotate(6deg);
+      animation-delay: 1.4s;
+    }
+
+    .depth-card--three {
+      right: 9%;
+      bottom: 8%;
+      transform: translateZ(74px) rotate(-4deg);
+      animation-delay: 2.8s;
+    }
+
+    .depth-beam {
+      position: absolute;
+      left: 8%;
+      right: 7%;
+      top: 50%;
+      height: 1px;
+      background: linear-gradient(90deg, transparent, rgba(196, 138, 106, 0.72), rgba(63, 156, 107, 0.48), transparent);
+      transform: translateZ(28px) rotate(-18deg);
+      opacity: 0.74;
+    }
+
     .brand-orbit__halo {
       position: absolute;
       inset: 0;
@@ -809,7 +922,7 @@
 
     .profile-photo {
       position: relative;
-      z-index: 2;
+      z-index: 3;
       width: min(82vw, 378px);
       aspect-ratio: 1;
       border: 1px solid rgba(250, 245, 241, 0.18);
@@ -857,6 +970,10 @@
 
     .brand-orbit:hover .profile-photo {
       box-shadow: 0 34px 82px rgba(26, 18, 15, 0.19);
+    }
+
+    .brand-orbit:hover .depth-scene {
+      transform: rotateX(4deg) rotateY(-5deg) translateZ(18px);
     }
 
     .profile-photo__caption {
@@ -1004,22 +1121,44 @@
       display: grid;
       grid-template-columns: repeat(2, minmax(0, 1fr));
       gap: 12px;
+      perspective: 1200px;
     }
 
     .principle {
+      position: relative;
       min-height: 210px;
+      overflow: hidden;
       border: 1px solid var(--line);
       border-radius: var(--radius);
-      background: rgba(255, 253, 252, 0.7);
+      background:
+        linear-gradient(145deg, rgba(255, 253, 252, 0.88), rgba(250, 245, 241, 0.48)),
+        rgba(255, 253, 252, 0.7);
       padding: clamp(20px, 3vw, 28px);
       box-shadow: 0 16px 42px rgba(26, 18, 15, 0.06);
+      transform-style: preserve-3d;
       transition: transform 300ms var(--ease), box-shadow 300ms var(--ease), border-color 300ms var(--ease);
+      will-change: transform;
+    }
+
+    .principle::after {
+      content: "";
+      position: absolute;
+      inset: auto 18px 0;
+      height: 3px;
+      background: linear-gradient(90deg, var(--support), var(--accent));
+      transform: scaleX(0);
+      transform-origin: left;
+      transition: transform 320ms var(--ease);
     }
 
     .principle:hover {
-      transform: translateY(-4px);
+      transform: translateY(-6px) rotateX(2deg) rotateY(-2deg);
       border-color: rgba(196, 138, 106, 0.48);
       box-shadow: 0 22px 48px rgba(26, 18, 15, 0.1);
+    }
+
+    .principle:hover::after {
+      transform: scaleX(1);
     }
 
     .principle__number {
@@ -1102,6 +1241,7 @@
       display: grid;
       grid-template-columns: repeat(3, minmax(0, 1fr));
       gap: 14px;
+      perspective: 1300px;
     }
 
     .post-card {
@@ -1118,7 +1258,9 @@
         rgba(250, 245, 241, 0.04);
       padding: clamp(22px, 3vw, 30px);
       box-shadow: 0 26px 62px rgba(0, 0, 0, 0.18);
+      transform-style: preserve-3d;
       transition: transform 360ms var(--ease), border-color 360ms var(--ease), background 360ms var(--ease);
+      will-change: transform;
     }
 
     .post-card:nth-child(2) {
@@ -1718,6 +1860,16 @@
       }
     }
 
+    @keyframes depthRingSpin {
+      from {
+        transform: translateZ(18px) rotateX(58deg) rotateZ(8deg);
+      }
+
+      to {
+        transform: translateZ(18px) rotateX(58deg) rotateZ(368deg);
+      }
+    }
+
     @keyframes signalPulse {
       0%,
       100% {
@@ -1768,6 +1920,17 @@
       }
     }
 
+    @keyframes depthFloat {
+      0%,
+      100% {
+        translate: 0 0;
+      }
+
+      50% {
+        translate: 0 -12px;
+      }
+    }
+
     [data-reveal] {
       opacity: 0;
       transform: translateY(24px);
@@ -1791,6 +1954,11 @@
       .brand-orbit {
         min-height: 520px;
         order: -1;
+      }
+
+      .depth-scene {
+        inset: 7% 0 0;
+        opacity: 0.7;
       }
 
       .quote-panel {
@@ -1983,10 +2151,24 @@
       .brand-orbit::before,
       .brand-orbit::after,
       .brand-orbit__halo,
+      .depth-card,
       .orbit-line,
       .hero-signal,
       .orbit-chip {
         display: none;
+      }
+
+      .depth-scene {
+        inset: 5% -8% auto;
+        height: 330px;
+      }
+
+      .depth-grid {
+        inset: 14% 0 0;
+      }
+
+      .depth-ring {
+        inset: 13%;
       }
 
       .profile-photo {
@@ -2120,6 +2302,26 @@
 
         <aside class="brand-orbit" aria-label="Brand portrait" data-reveal style="--delay: 140ms;">
           <div class="brand-orbit__halo" aria-hidden="true"></div>
+          <div class="depth-scene" aria-hidden="true">
+            <span class="depth-grid"></span>
+            <span class="depth-ring"></span>
+            <span class="depth-beam"></span>
+            <span class="depth-card depth-card--one" data-label="Signal">
+              <span style="--fill: 82%;"></span>
+              <span style="--fill: 48%;"></span>
+              <span style="--fill: 68%;"></span>
+            </span>
+            <span class="depth-card depth-card--two" data-label="Finance">
+              <span style="--fill: 56%;"></span>
+              <span style="--fill: 88%;"></span>
+              <span style="--fill: 62%;"></span>
+            </span>
+            <span class="depth-card depth-card--three" data-label="Learning">
+              <span style="--fill: 74%;"></span>
+              <span style="--fill: 52%;"></span>
+              <span style="--fill: 92%;"></span>
+            </span>
+          </div>
           <div class="orbit-line" aria-hidden="true"></div>
           <span class="orbit-chip orbit-chip--one" aria-hidden="true">AI literacy</span>
           <span class="orbit-chip orbit-chip--two" aria-hidden="true">Finance lens</span>
@@ -2416,6 +2618,8 @@
       const navLinks = [...document.querySelectorAll(".nav__links a")];
       const cursorGlow = document.querySelector(".cursor-glow");
       const tiltTargets = [...document.querySelectorAll(".brand-orbit")];
+      const depthScene = document.querySelector(".depth-scene");
+      const depthCards = [...document.querySelectorAll(".principle, .method-card, .method-stat")];
       const postToggles = [...document.querySelectorAll(".post-card__cue")];
 
       const setProgress = () => {
@@ -2499,11 +2703,29 @@
 
             if (topNote) topNote.style.transform = `translate3d(${x * -12}px, ${y * -10}px, 0)`;
             if (bottomNote) bottomNote.style.transform = `translate3d(${x * 14}px, ${y * 12}px, 0)`;
+            if (depthScene) {
+              depthScene.style.transform = `rotateX(${y * -9}deg) rotateY(${x * 12}deg) translateZ(22px)`;
+            }
           }, { passive: true });
 
           target.addEventListener("pointerleave", () => {
             if (topNote) topNote.style.transform = "";
             if (bottomNote) bottomNote.style.transform = "";
+            if (depthScene) depthScene.style.transform = "";
+          });
+        });
+
+        depthCards.forEach((card) => {
+          card.addEventListener("pointermove", (event) => {
+            const rect = card.getBoundingClientRect();
+            const x = (event.clientX - rect.left) / rect.width - 0.5;
+            const y = (event.clientY - rect.top) / rect.height - 0.5;
+            const lift = card.classList.contains("post-card") ? 10 : 6;
+            card.style.transform = `translateY(-${lift}px) rotateX(${y * -5}deg) rotateY(${x * 6}deg)`;
+          }, { passive: true });
+
+          card.addEventListener("pointerleave", () => {
+            card.style.transform = "";
           });
         });
       }
