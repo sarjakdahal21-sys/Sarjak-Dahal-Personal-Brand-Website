@@ -1118,7 +1118,7 @@
         rgba(250, 245, 241, 0.04);
       padding: clamp(22px, 3vw, 30px);
       box-shadow: 0 26px 62px rgba(0, 0, 0, 0.18);
-      transition: transform 360ms var(--ease), border-color 360ms var(--ease), background 360ms var(--ease);
+      transition: transform 520ms var(--ease), border-color 360ms var(--ease), background 360ms var(--ease), box-shadow 360ms var(--ease);
     }
 
     .post-card:nth-child(2) {
@@ -1153,19 +1153,20 @@
     }
 
     .post-card:hover {
-      transform: translateY(-8px) rotate(-0.6deg);
+      transform: translateY(-10px);
       border-color: rgba(196, 138, 106, 0.4);
       background:
         linear-gradient(160deg, rgba(250, 245, 241, 0.14), rgba(250, 245, 241, 0.04)),
         rgba(250, 245, 241, 0.06);
+      box-shadow: 0 32px 70px rgba(0, 0, 0, 0.24);
     }
 
     .post-card:nth-child(2):hover {
-      transform: translateY(22px) rotate(0.6deg);
+      transform: translateY(22px);
     }
 
     .post-card:nth-child(3):hover {
-      transform: translateY(-28px) rotate(-0.6deg);
+      transform: translateY(-28px);
     }
 
     .post-card:hover::before {
@@ -2436,7 +2437,7 @@
       const navLinks = [...document.querySelectorAll(".nav__links a")];
       const cursorGlow = document.querySelector(".cursor-glow");
       const tiltTargets = [...document.querySelectorAll(".brand-orbit")];
-      const premiumTiltItems = [...document.querySelectorAll(".meta-tile, .principle, .post-card")];
+      const premiumTiltItems = [...document.querySelectorAll(".meta-tile, .principle")];
       const postToggles = [...document.querySelectorAll(".post-card__cue")];
 
       const setProgress = () => {
