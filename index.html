@@ -554,6 +554,7 @@
       content: "";
       position: absolute;
       inset: 0;
+      pointer-events: none;
       opacity: 0;
       background: linear-gradient(120deg, transparent, rgba(255, 255, 255, 0.24), transparent);
       transform: translateX(-100%);
@@ -2445,6 +2446,7 @@
       const tiltTargets = [...document.querySelectorAll(".brand-orbit")];
       const premiumTiltItems = [...document.querySelectorAll(".meta-tile, .principle")];
       const postToggles = [...document.querySelectorAll(".post-card__cue")];
+      const directLinks = [...document.querySelectorAll(".hero__actions .button[href^='https://'], .contact__actions .button[href^='https://']")];
 
       const setProgress = () => {
         const scrollable = document.documentElement.scrollHeight - window.innerHeight;
@@ -2577,6 +2579,14 @@
 
           const isExpanded = card.classList.toggle("is-expanded");
           toggle.setAttribute("aria-expanded", String(isExpanded));
+        });
+      });
+
+      directLinks.forEach((link) => {
+        link.addEventListener("click", (event) => {
+          if (event.metaKey || event.ctrlKey || event.shiftKey || event.altKey || event.button !== 0) return;
+          event.preventDefault();
+          window.location.href = link.href;
         });
       });
 
