@@ -599,7 +599,7 @@ p {
   height: 100%;
   border-radius: 50%;
   overflow: hidden;
-  border: 1px solid var(--line-dark-soft);
+  border: 1.5px solid var(--brass-soft);
   background: var(--ink-2);
 }
 
@@ -610,21 +610,6 @@ p {
   object-fit: cover;
   object-position: 50% 50%;
   filter: saturate(0.94) contrast(1.03);
-}
-
-.profile-frame__ring {
-  position: absolute;
-  inset: -16px;
-  transform: rotate(-90deg);
-  pointer-events: none;
-}
-
-.profile-frame__ring circle {
-  fill: none;
-  stroke: var(--brass-soft);
-  stroke-width: 1;
-  stroke-linecap: round;
-  stroke-dasharray: 37.7 37.7;
 }
 
 /* Portrait entrance: settles into focus rather than sliding up like other reveals */
