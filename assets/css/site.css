@@ -1,5 +1,6 @@
 /* Sarjak Dahal — shared site styles
-   Navy & Brass ledger system (flat, editorial, hairline rules). Rubik only. */
+   Navy & Brass ledger system (flat, editorial, hairline rules). Rubik only.
+   v16 "living ledger": self-drawing hero chart, record leaders, method rule. */
 
 :root {
   /* Palette */
@@ -613,52 +614,60 @@ p {
 }
 
 /* Portrait entrance: settles into focus rather than sliding up like other reveals */
-.profile-frame__image[data-reveal] {
+html.js .profile-frame__image[data-reveal] {
   transform: scale(0.94);
 }
 
-.profile-frame__image[data-reveal].is-visible {
+html.js .profile-frame__image[data-reveal].is-visible {
   transform: scale(1);
 }
 
-/* ---------- Proof strip (flat ledger entries) ---------- */
+/* ---------- The record (ledger rows with dotted leaders) ---------- */
 
-.proof-strip {
-  display: grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
-  gap: 0;
-  border-top: 1px solid var(--line);
+.record {
+  border-top: 1px solid var(--line-strong);
 }
 
-.proof-item {
-  display: block;
-  padding: 26px 24px 8px 24px;
-  border-left: 1px solid var(--line);
+.record__row {
+  display: flex;
+  align-items: baseline;
+  gap: 18px;
+  padding: 20px 0 18px;
+  border-bottom: 1px solid var(--line);
 }
 
-.proof-item:first-child {
-  border-left: 0;
-  padding-left: 0;
-}
-
-.proof-item__mark {
-  display: none;
-}
-
-.proof-item strong {
-  display: block;
+.record__row strong {
+  flex: 0 0 auto;
   color: var(--ink);
   font-family: var(--font-display);
-  font-size: 1.08rem;
+  font-size: clamp(1.02rem, 1.5vw, 1.16rem);
   font-weight: 600;
   line-height: 1.3;
+  white-space: nowrap;
 }
 
-.proof-item p {
-  margin-top: 6px;
+.record__leader {
+  flex: 1 1 auto;
+  min-width: 32px;
+  align-self: center;
+  border-bottom: 2px dotted rgba(14, 27, 44, 0.26);
+  transform: translateY(-3px);
+}
+
+.record__note {
+  flex: 0 1 auto;
   color: var(--slate);
   font-size: 0.92rem;
-  line-height: 1.6;
+  line-height: 1.55;
+  text-align: right;
+}
+
+.record__tick {
+  flex: 0 0 auto;
+  color: var(--brass);
+  font-size: 1rem;
+  font-weight: 700;
+  line-height: 1;
 }
 
 /* ---------- Principle cards (flat, ruled) ---------- */
@@ -1264,9 +1273,10 @@ p {
   flex: 0 0 15px;
 }
 
-/* ---------- Motion (calm: fade + rise only) ---------- */
+/* ---------- Motion (calm: fade + rise only) ----------
+   Gated on html.js so a failed script never leaves the page blank. */
 
-[data-reveal] {
+html.js [data-reveal] {
   opacity: 0;
   transform: translate3d(0, 22px, 0);
   transition: opacity 640ms var(--ease), transform 640ms var(--ease);
@@ -1274,7 +1284,7 @@ p {
   will-change: opacity, transform;
 }
 
-[data-reveal].is-visible {
+html.js [data-reveal].is-visible {
   opacity: 1;
   transform: translate3d(0, 0, 0);
 }
@@ -1466,5 +1476,340 @@ p {
   [data-reveal] {
     opacity: 1;
     transform: none;
+  }
+}
+
+/* ==================================================================
+   Craft layer (v16) — the living ledger
+   One idea, echoed quietly: a brass rule that draws itself.
+   Every effect below is gated on html.js-motion, which the script
+   only adds when JS runs AND the user allows motion — so no-JS and
+   reduced-motion visitors get the complete static page.
+   ================================================================== */
+
+/* ---------- Graph-paper rulings on dark bands ---------- */
+
+.dark-band--ruled {
+  position: relative;
+  overflow: hidden;
+}
+
+.dark-band--ruled::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  background-image:
+    linear-gradient(rgba(247, 243, 235, 0.04) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(247, 243, 235, 0.04) 1px, transparent 1px);
+  background-size: 56px 56px;
+  -webkit-mask-image: linear-gradient(180deg, transparent 0%, #000 24%, #000 78%, transparent 100%);
+  mask-image: linear-gradient(180deg, transparent 0%, #000 24%, #000 78%, transparent 100%);
+}
+
+.dark-band--ruled > .section {
+  position: relative;
+  z-index: 2;
+}
+
+/* ---------- Hero ledger chart (draws itself once, then holds) ---------- */
+
+.ledger-chart {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: -2px;
+  z-index: 1;
+  display: block;
+  width: 100%;
+  height: auto;
+  pointer-events: none;
+}
+
+.ledger-chart__area {
+  fill: rgba(176, 141, 62, 0.08);
+  stroke: none;
+}
+
+.ledger-chart__line {
+  fill: none;
+  stroke: var(--brass-soft);
+  stroke-width: 1.6;
+  stroke-linejoin: round;
+  stroke-linecap: round;
+  opacity: 0.62;
+}
+
+.ledger-chart circle {
+  fill: var(--brass-soft);
+  opacity: 0.72;
+}
+
+html.js-motion .ledger-chart__area {
+  opacity: 0;
+  transition: opacity 900ms var(--ease) 1400ms;
+}
+
+html.js-motion .ledger-chart.is-inked .ledger-chart__area {
+  opacity: 1;
+}
+
+html.js-motion .ledger-chart__line {
+  stroke-dasharray: 1;
+  stroke-dashoffset: 1;
+}
+
+html.js-motion .ledger-chart.is-inked .ledger-chart__line {
+  animation: chart-draw 2000ms cubic-bezier(0.4, 0, 0.2, 1) forwards;
+}
+
+@keyframes chart-draw {
+  to {
+    stroke-dashoffset: 0;
+  }
+}
+
+html.js-motion .ledger-chart circle {
+  opacity: 0;
+  transform: scale(0.3);
+  transform-box: fill-box;
+  transform-origin: center;
+}
+
+html.js-motion .ledger-chart.is-inked circle {
+  animation: chart-dot 480ms var(--ease) forwards;
+  animation-delay: var(--dot-delay, 0ms);
+}
+
+@keyframes chart-dot {
+  to {
+    opacity: 0.72;
+    transform: scale(1);
+  }
+}
+
+/* ---------- Headline line masks (ink up from the rule) ---------- */
+
+.line-mask {
+  display: block;
+  overflow: hidden;
+  /* keep descenders out of the clip */
+  padding-bottom: 0.12em;
+  margin-bottom: -0.12em;
+}
+
+.line-mask > span {
+  display: block;
+}
+
+html.js-motion .line-mask > span {
+  transform: translateY(114%);
+  transition: transform 860ms var(--ease);
+  transition-delay: var(--delay, 0ms);
+}
+
+html.js-motion.is-live .line-mask > span {
+  transform: translateY(0);
+}
+
+/* ---------- Standards ticker (the one loop on the site) ---------- */
+
+.ticker {
+  overflow: hidden;
+  border-bottom: 1px solid var(--line);
+  background: var(--ivory);
+}
+
+.ticker__track {
+  display: flex;
+  width: max-content;
+  padding: 15px 0;
+}
+
+html.js-motion .ticker__track {
+  animation: ticker-scroll 46s linear infinite;
+}
+
+html.js-motion .ticker:hover .ticker__track {
+  animation-play-state: paused;
+}
+
+@keyframes ticker-scroll {
+  to {
+    transform: translateX(-50%);
+  }
+}
+
+.ticker__group {
+  display: flex;
+  align-items: center;
+  flex: 0 0 auto;
+}
+
+.ticker__item {
+  display: inline-flex;
+  align-items: center;
+  gap: 26px;
+  padding: 0 13px 0 26px;
+  color: var(--slate);
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  white-space: nowrap;
+  line-height: 1;
+}
+
+.ticker__item::after {
+  content: "✓";
+  color: var(--brass);
+  font-size: 0.78rem;
+  letter-spacing: 0;
+}
+
+/* ---------- Brass corner ticks on cards ---------- */
+
+.principle::after,
+.format-card::after {
+  content: "";
+  position: absolute;
+  top: 12px;
+  right: 12px;
+  width: 13px;
+  height: 13px;
+  border-top: 2px solid var(--brass);
+  border-right: 2px solid var(--brass);
+  opacity: 0;
+  transform: translate(-5px, 5px);
+  transition: opacity 260ms var(--ease), transform 260ms var(--ease);
+}
+
+.format-card::after {
+  border-color: var(--brass-soft);
+}
+
+.principle:hover::after,
+.format-card:hover::after {
+  opacity: 1;
+  transform: translate(0, 0);
+}
+
+/* ---------- Method rule: fills as the reader moves through it ---------- */
+
+.method-visual {
+  position: relative;
+}
+
+.method-visual::after {
+  content: "";
+  position: absolute;
+  top: -1px;
+  left: 0;
+  width: 100%;
+  height: 2px;
+  background: var(--brass-soft);
+  transform: scaleX(var(--method-progress, 0));
+  transform-origin: left center;
+}
+
+html.js-motion .method-step {
+  opacity: 0.42;
+  transition: opacity 480ms var(--ease);
+}
+
+html.js-motion .method-step.is-lit {
+  opacity: 1;
+}
+
+/* ---------- Header: hairline gains weight once the page moves ---------- */
+
+.site-header {
+  transition: box-shadow 260ms var(--ease);
+}
+
+.site-header.is-scrolled {
+  box-shadow: 0 12px 32px -20px rgba(14, 27, 44, 0.35);
+}
+
+/* ---------- Contact list: trial-balance leaders ---------- */
+
+.contact-link .leader {
+  flex: 1 1 auto;
+  min-width: 20px;
+  align-self: center;
+  border-bottom: 2px dotted rgba(14, 27, 44, 0.22);
+  transform: translateY(-2px);
+}
+
+/* ---------- Footer watermark ---------- */
+
+.site-footer {
+  overflow: hidden;
+}
+
+.footer-watermark {
+  display: block;
+  width: min(100% - 32px, var(--max));
+  margin: 0 auto;
+  padding-bottom: clamp(10px, 2vw, 22px);
+  font-family: var(--font-display);
+  font-size: clamp(3rem, 11.2vw, 9.2rem);
+  font-weight: 800;
+  line-height: 0.92;
+  letter-spacing: -0.03em;
+  text-transform: uppercase;
+  white-space: nowrap;
+  pointer-events: none;
+  user-select: none;
+  color: rgba(247, 243, 235, 0.045);
+  -webkit-text-stroke: 1px rgba(247, 243, 235, 0.12);
+}
+
+/* ---------- 404 ---------- */
+
+.notfound {
+  min-height: calc(100vh - var(--nav-height) - 200px);
+  display: grid;
+  align-content: center;
+}
+
+.notfound h1 {
+  margin-top: 0;
+}
+
+.notfound p {
+  max-width: 52ch;
+  margin-top: 20px;
+  color: rgba(247, 243, 235, 0.74);
+  font-size: clamp(1rem, 1.5vw, 1.14rem);
+  line-height: 1.75;
+}
+
+/* ---------- Craft layer: responsive ---------- */
+
+@media (max-width: 760px) {
+  .record__row {
+    flex-wrap: wrap;
+    gap: 10px 14px;
+    padding: 18px 0 16px;
+  }
+
+  .record__leader {
+    order: 2;
+  }
+
+  .record__tick {
+    order: 3;
+  }
+
+  .record__note {
+    order: 4;
+    flex: 1 1 100%;
+    text-align: left;
+  }
+
+  .footer-watermark {
+    width: min(100% - 24px, var(--max));
   }
 }

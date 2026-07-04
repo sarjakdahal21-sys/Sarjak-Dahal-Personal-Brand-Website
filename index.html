@@ -25,7 +25,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Rubik:wght@300..900&display=swap">
-  <link rel="stylesheet" href="/assets/css/site.css?v=15">
+  <link rel="stylesheet" href="/assets/css/site.css?v=16">
   <title>Sarjak Dahal | ACCA, AI Literacy</title>
   <script type="application/ld+json">
     {
@@ -66,12 +66,28 @@
   </header>
 
   <main id="main">
-    <div class="dark-band">
+    <div class="dark-band dark-band--ruled">
+      <svg class="ledger-chart" viewBox="0 0 1200 220" aria-hidden="true" focusable="false">
+        <path class="ledger-chart__area" d="M0,182 L130,150 L255,160 L390,118 L520,128 L655,88 L790,100 L930,60 L1065,72 L1200,38 L1200,220 L0,220 Z"></path>
+        <polyline class="ledger-chart__line" pathLength="1" points="0,182 130,150 255,160 390,118 520,128 655,88 790,100 930,60 1065,72 1200,38"></polyline>
+        <circle cx="130" cy="150" r="3.5" style="--dot-delay: 200ms;"></circle>
+        <circle cx="255" cy="160" r="3.5" style="--dot-delay: 400ms;"></circle>
+        <circle cx="390" cy="118" r="3.5" style="--dot-delay: 620ms;"></circle>
+        <circle cx="520" cy="128" r="3.5" style="--dot-delay: 820ms;"></circle>
+        <circle cx="655" cy="88" r="3.5" style="--dot-delay: 1040ms;"></circle>
+        <circle cx="790" cy="100" r="3.5" style="--dot-delay: 1250ms;"></circle>
+        <circle cx="930" cy="60" r="3.5" style="--dot-delay: 1470ms;"></circle>
+        <circle cx="1065" cy="72" r="3.5" style="--dot-delay: 1690ms;"></circle>
+      </svg>
       <section id="hero" class="section section--hero" data-section>
         <div class="hero">
           <div class="hero__content">
             <p class="eyebrow" data-reveal>ACCA | AI Educator</p>
-            <h1 data-reveal style="--delay: 80ms;">AI for finance professionals &amp; <em class="accent">educators.</em></h1>
+            <h1>
+              <span class="line-mask"><span style="--delay: 80ms;">AI for finance</span></span>
+              <span class="line-mask"><span style="--delay: 200ms;">professionals &amp;</span></span>
+              <span class="line-mask"><span style="--delay: 320ms;"><em class="accent">educators.</em></span></span>
+            </h1>
             <p class="hero__lead" data-reveal style="--delay: 160ms;">
               I help finance professionals and educators use AI with confidence.
             </p>
@@ -128,28 +144,47 @@
       </section>
     </div>
 
+    <div class="ticker" aria-label="Working standards">
+      <div class="ticker__track">
+        <div class="ticker__group">
+          <span class="ticker__item">ACCA qualified</span>
+          <span class="ticker__item">Verified first</span>
+          <span class="ticker__item">Cited sources</span>
+          <span class="ticker__item">Limits stated</span>
+          <span class="ticker__item">AI for finance</span>
+          <span class="ticker__item">AI for education</span>
+        </div>
+        <div class="ticker__group" aria-hidden="true">
+          <span class="ticker__item">ACCA qualified</span>
+          <span class="ticker__item">Verified first</span>
+          <span class="ticker__item">Cited sources</span>
+          <span class="ticker__item">Limits stated</span>
+          <span class="ticker__item">AI for finance</span>
+          <span class="ticker__item">AI for education</span>
+        </div>
+      </div>
+    </div>
+
     <section id="proof" class="section section--flush-bottom" data-section>
-      <div class="proof-strip">
-        <div class="proof-item" data-reveal>
-          <span class="proof-item__mark" aria-hidden="true">✓</span>
-          <div>
-            <strong>ACCA qualified</strong>
-            <p>Worked with ACCA as an approved employer.</p>
-          </div>
+      <p class="eyebrow" data-reveal>The Record</p>
+      <div class="record">
+        <div class="record__row" data-reveal>
+          <strong>ACCA qualified</strong>
+          <span class="record__leader" aria-hidden="true"></span>
+          <span class="record__note">Worked with ACCA as an approved employer.</span>
+          <span class="record__tick" aria-hidden="true">✓</span>
         </div>
-        <div class="proof-item" data-reveal style="--delay: 80ms;">
-          <span class="proof-item__mark" aria-hidden="true">✓</span>
-          <div>
-            <strong>Verified first</strong>
-            <p>Facts checked before they are shared.</p>
-          </div>
+        <div class="record__row" data-reveal style="--delay: 80ms;">
+          <strong>Verified first</strong>
+          <span class="record__leader" aria-hidden="true"></span>
+          <span class="record__note">Facts checked before they are shared.</span>
+          <span class="record__tick" aria-hidden="true">✓</span>
         </div>
-        <div class="proof-item" data-reveal style="--delay: 160ms;">
-          <span class="proof-item__mark" aria-hidden="true">✓</span>
-          <div>
-            <strong>Cited sources</strong>
-            <p>Evidence linked wherever possible.</p>
-          </div>
+        <div class="record__row" data-reveal style="--delay: 160ms;">
+          <strong>Cited sources</strong>
+          <span class="record__leader" aria-hidden="true"></span>
+          <span class="record__note">Evidence linked wherever possible.</span>
+          <span class="record__tick" aria-hidden="true">✓</span>
         </div>
       </div>
     </section>
@@ -185,7 +220,7 @@
       </div>
     </section>
 
-    <div class="dark-band cta-band">
+    <div class="dark-band cta-band dark-band--ruled">
       <section id="follow" class="section" data-section>
         <p class="eyebrow" data-reveal>Stay Close to the Work</p>
         <h2 data-reveal style="--delay: 80ms;">Follow along where the notes land first.</h2>
@@ -252,8 +287,9 @@
         </a>
       </div>
     </div>
+    <div class="footer-watermark" aria-hidden="true">Sarjak Dahal</div>
   </footer>
 
-  <script src="/assets/js/site.js?v=15" defer></script>
+  <script src="/assets/js/site.js?v=16" defer></script>
 </body>
 </html>
