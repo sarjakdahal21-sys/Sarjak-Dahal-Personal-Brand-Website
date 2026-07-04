@@ -8,7 +8,6 @@
   const progressBar = document.querySelector(".progress__bar");
   const header = document.querySelector(".site-header");
   const revealItems = [...document.querySelectorAll("[data-reveal]")];
-  const chart = document.querySelector(".ledger-chart");
   const method = document.querySelector("[data-method]");
   const methodSteps = method ? [...method.querySelectorAll(".method-step")] : [];
 
@@ -53,23 +52,6 @@
   /* Headline masks ink in on the frame after first paint */
   if (!prefersReducedMotion) {
     requestAnimationFrame(() => requestAnimationFrame(() => root.classList.add("is-live")));
-  }
-
-  /* Hero chart draws once when it enters view (immediately on load) */
-  if (chart) {
-    if (!prefersReducedMotion && "IntersectionObserver" in window) {
-      const chartObserver = new IntersectionObserver((entries) => {
-        entries.forEach((entry) => {
-          if (entry.isIntersecting) {
-            chart.classList.add("is-inked");
-            chartObserver.disconnect();
-          }
-        });
-      }, { threshold: 0.2 });
-      chartObserver.observe(chart);
-    } else {
-      chart.classList.add("is-inked");
-    }
   }
 
   if (prefersReducedMotion && method) {
