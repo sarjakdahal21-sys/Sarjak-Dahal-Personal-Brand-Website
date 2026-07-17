@@ -1,21 +1,26 @@
 /* Sarjak Dahal — shared site styles
-   Navy & Brass ledger system (flat, editorial, hairline rules). Rubik only.
-   v17: headline line-mask reveals, scroll-linked method rule, corner ticks. */
+   Sarjak Dahal Design System v1.1 (see Claude Database/Carousel Automation/design_system.md).
+   Navy & gold ledger system: Rubik only, sharp edges, no shadows, hairline structure,
+   ghost math-grid fields, label chips, named opacity scale.
+   v18: design-system conformance pass (chips, tick signature, grid field, shadows removed). */
 
 :root {
-  /* Palette */
-  --ink: #0E1B2C;          /* deep ledger-ink navy — dark surface */
-  --ink-2: #16283E;        /* raised navy panel */
-  --ivory: #F7F3EB;        /* warm paper — light canvas */
+  /* Palette — design-system tokens */
+  --ink: #0E1B2C;          /* surface — deep ledger-ink navy */
+  --ink-2: #16283E;        /* primary — raised navy panel */
+  --ivory: #F7F3EB;        /* light — warm paper canvas */
   --white: #FFFFFF;
-  --brass: #B08D3E;        /* primary accent */
-  --brass-soft: #C9A961;   /* accent on dark */
-  --slate: #46536B;        /* body text on light */
-  --mist: #8B93A1;         /* muted labels */
-  --line: rgba(14, 27, 44, 0.14);
-  --line-strong: rgba(14, 27, 44, 0.26);
-  --line-dark: rgba(247, 243, 235, 0.18);
-  --line-dark-soft: rgba(247, 243, 235, 0.1);
+  --brass: #B08D3E;        /* accent */
+  --brass-soft: #C9A961;   /* accent tint, on dark surfaces */
+  --slate: #46536B;        /* secondary — body text on light */
+
+  /* Named opacity scale: ghost .04 · hairline .08 · chip .15 · border .25
+     · muted .40 · soft .50 · subtle .65 · strong .80 */
+  --hairline: rgba(14, 27, 44, 0.08);
+  --line: rgba(14, 27, 44, 0.15);
+  --line-strong: rgba(14, 27, 44, 0.25);
+  --line-dark: rgba(247, 243, 235, 0.25);
+  --line-dark-soft: rgba(247, 243, 235, 0.08);
 
   /* Aliases kept for existing markup */
   --primary: var(--ink-2);
@@ -27,10 +32,7 @@
   --support: #1E5631;
   --paper: var(--white);
 
-  --shadow-card: 0 1px 2px rgba(14, 27, 44, 0.05), 0 12px 32px -12px rgba(14, 27, 44, 0.18);
-  --shadow-card-hover: 0 4px 10px rgba(14, 27, 44, 0.08), 0 24px 50px -16px rgba(14, 27, 44, 0.3);
-  --shadow-card-hover-dark: 0 4px 10px rgba(0, 0, 0, 0.24), 0 26px 54px -16px rgba(0, 0, 0, 0.46);
-  --radius: 2px;
+  --radius: 0;
   --max: 1160px;
   --nav-height: 78px;
   --font-display: "Rubik", system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
@@ -69,6 +71,20 @@ body {
   letter-spacing: 0;
 }
 
+/* Ghost math-grid field on the light canvas (design system: GridField, always
+   behind content). Dark bands paint over it and carry their own ruled grid. */
+body::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  background-image:
+    linear-gradient(rgba(22, 40, 62, 0.04) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(22, 40, 62, 0.04) 1px, transparent 1px);
+  background-size: 56px 56px;
+}
+
 a {
   color: inherit;
   text-decoration: none;
@@ -103,14 +119,16 @@ button:focus-visible {
   transform: translateY(0);
 }
 
+/* Top strip (design system: 4px accent strip on every surface) — the track
+   holds the strip at chip opacity; the bar fills it with scroll progress. */
 .progress {
   position: fixed;
   top: 0;
   left: 0;
   z-index: 60;
   width: 100%;
-  height: 2px;
-  background: transparent;
+  height: 4px;
+  background: rgba(176, 141, 62, 0.15);
 }
 
 .progress__bar {
@@ -296,16 +314,29 @@ p {
   margin: 0;
 }
 
+/* Label chip (design system: LabelChip — accent fill at chip opacity,
+   accent border at border opacity, sharp corners) */
 .eyebrow {
   display: inline-flex;
   align-items: center;
-  margin: 0 0 18px;
+  width: fit-content;
+  justify-self: start;
+  margin: 0 0 20px;
+  padding: 8px 14px;
+  border: 1px solid rgba(176, 141, 62, 0.25);
+  background: rgba(176, 141, 62, 0.15);
   color: var(--brass);
-  font-size: 0.74rem;
+  font-size: 0.72rem;
   font-weight: 700;
-  letter-spacing: 0.22em;
-  line-height: 1.4;
+  letter-spacing: 0.18em;
+  line-height: 1;
   text-transform: uppercase;
+}
+
+.dark-band .eyebrow {
+  border-color: rgba(201, 169, 97, 0.25);
+  background: rgba(201, 169, 97, 0.15);
+  color: var(--brass-soft);
 }
 
 /* Short brass ledger rule above card headings */
@@ -326,7 +357,7 @@ p {
   gap: clamp(18px, 4vw, 58px);
   margin-bottom: clamp(28px, 4vw, 52px);
   padding-bottom: clamp(18px, 2.5vw, 28px);
-  border-bottom: 1px solid var(--line);
+  border-bottom: 1px solid var(--hairline);
 }
 
 .section-heading p {
@@ -344,7 +375,7 @@ p {
 }
 
 .dark-band .section-heading {
-  border-bottom-color: var(--line-dark);
+  border-bottom-color: var(--line-dark-soft);
 }
 
 .section-cta {
@@ -479,7 +510,7 @@ p {
 }
 
 .dark-band .section-heading p {
-  color: rgba(247, 243, 235, 0.7);
+  color: rgba(247, 243, 235, 0.8);
 }
 
 .dark-band .button {
@@ -539,7 +570,7 @@ p {
 .hero__lead {
   max-width: 580px;
   margin-top: 22px;
-  color: rgba(247, 243, 235, 0.78);
+  color: rgba(247, 243, 235, 0.8);
   font-size: clamp(1.05rem, 1.7vw, 1.22rem);
   font-weight: 300;
   line-height: 1.75;
@@ -576,7 +607,7 @@ p {
 }
 
 .meta-tile p {
-  color: rgba(247, 243, 235, 0.72);
+  color: rgba(247, 243, 235, 0.8);
   font-size: 0.94rem;
   line-height: 1.55;
 }
@@ -637,14 +668,12 @@ html.js .profile-frame__image[data-reveal].is-visible {
   border-radius: var(--radius);
   background: var(--white);
   padding: clamp(22px, 3vw, 30px);
-  box-shadow: var(--shadow-card);
-  transition: border-color 240ms var(--ease), transform 240ms var(--ease), box-shadow 240ms var(--ease);
+  transition: border-color 240ms var(--ease), transform 240ms var(--ease);
 }
 
 .principle:hover {
   transform: translateY(-4px);
   border-color: rgba(176, 141, 62, 0.55);
-  box-shadow: var(--shadow-card-hover);
 }
 
 .principle h3 {
@@ -706,7 +735,7 @@ html.js .profile-frame__image[data-reveal].is-visible {
 .quote-panel cite {
   position: relative;
   z-index: 1;
-  color: rgba(247, 243, 235, 0.64);
+  color: rgba(247, 243, 235, 0.65);
   font-style: normal;
   font-size: 0.94rem;
   line-height: 1.55;
@@ -765,7 +794,6 @@ html.js .profile-frame__image[data-reveal].is-visible {
   border: 1px solid var(--line);
   border-radius: var(--radius);
   background: var(--white);
-  box-shadow: var(--shadow-card);
 }
 
 .method-card {
@@ -889,7 +917,7 @@ html.js .profile-frame__image[data-reveal].is-visible {
   border-radius: var(--radius);
   background: var(--ink-2);
   padding: clamp(24px, 3vw, 32px);
-  transition: border-color 240ms var(--ease), transform 240ms var(--ease), box-shadow 240ms var(--ease);
+  transition: border-color 240ms var(--ease), transform 240ms var(--ease);
 }
 
 .format-card::before {
@@ -899,7 +927,6 @@ html.js .profile-frame__image[data-reveal].is-visible {
 .format-card:hover {
   transform: translateY(-4px);
   border-color: rgba(201, 169, 97, 0.5);
-  box-shadow: var(--shadow-card-hover-dark);
 }
 
 .format-card h3 {
@@ -909,13 +936,13 @@ html.js .profile-frame__image[data-reveal].is-visible {
 
 .format-card p {
   margin-top: 10px;
-  color: rgba(247, 243, 235, 0.7);
+  color: rgba(247, 243, 235, 0.8);
   font-size: 0.96rem;
   line-height: 1.66;
 }
 
 .format-card footer {
-  color: var(--mist);
+  color: rgba(247, 243, 235, 0.65);
   font-size: 0.82rem;
   border-top: 1px solid var(--line-dark-soft);
   padding-top: 16px;
@@ -939,13 +966,12 @@ html.js .profile-frame__image[data-reveal].is-visible {
   border: 1px solid var(--line-dark-soft);
   background: var(--ink);
   color: var(--ivory);
-  transition: border-color 240ms var(--ease), transform 240ms var(--ease), box-shadow 240ms var(--ease);
+  transition: border-color 240ms var(--ease), transform 240ms var(--ease);
 }
 
 .watch-card:hover {
   transform: translateY(-4px);
   border-color: rgba(201, 169, 97, 0.5);
-  box-shadow: var(--shadow-card-hover-dark);
 }
 
 .watch-card__play {
@@ -1141,7 +1167,7 @@ html.js .profile-frame__image[data-reveal].is-visible {
 .cta-band p {
   max-width: 60ch;
   margin-top: 14px;
-  color: rgba(247, 243, 235, 0.7);
+  color: rgba(247, 243, 235, 0.8);
   font-size: clamp(1rem, 1.5vw, 1.1rem);
 }
 
@@ -1165,17 +1191,34 @@ html.js .profile-frame__image[data-reveal].is-visible {
   padding: clamp(36px, 6vw, 58px) 0;
 }
 
+/* Slide footer signature (design system: "Sarjak Dahal | ACCA",
+   left-aligned, 1px tick divider) */
 .signature {
-  display: block;
+  display: flex;
+  align-items: center;
+  gap: 14px;
   margin-bottom: 10px;
   color: var(--ivory);
   font-size: clamp(1.55rem, 3vw, 2.2rem);
   font-weight: 700;
 }
 
+.signature__tick {
+  width: 1px;
+  height: 0.72em;
+  background: var(--brass-soft);
+}
+
+.signature__cred {
+  color: var(--brass-soft);
+  font-size: 0.5em;
+  font-weight: 600;
+  letter-spacing: 0.2em;
+}
+
 .footer-inner p {
   max-width: 560px;
-  color: rgba(247, 243, 235, 0.62);
+  color: rgba(247, 243, 235, 0.65);
   line-height: 1.65;
 }
 
@@ -1185,7 +1228,7 @@ html.js .profile-frame__image[data-reveal].is-visible {
   gap: 18px;
   margin-top: 18px;
   font-size: 0.86rem;
-  color: var(--mist);
+  color: rgba(247, 243, 235, 0.65);
 }
 
 .footer-nav a:hover {
@@ -1207,7 +1250,7 @@ html.js .profile-frame__image[data-reveal].is-visible {
   border: 1px solid var(--line-dark);
   border-radius: var(--radius);
   padding: 9px 14px;
-  color: rgba(247, 243, 235, 0.74);
+  color: rgba(247, 243, 235, 0.8);
   font-size: 0.84rem;
   font-weight: 600;
   transition: border-color 220ms ease, color 220ms ease;
@@ -1548,11 +1591,11 @@ html.js-motion .method-step.is-lit {
 /* ---------- Header: hairline gains weight once the page moves ---------- */
 
 .site-header {
-  transition: box-shadow 260ms var(--ease);
+  transition: border-color 260ms var(--ease);
 }
 
 .site-header.is-scrolled {
-  box-shadow: 0 12px 32px -20px rgba(14, 27, 44, 0.35);
+  border-bottom-color: var(--line-strong);
 }
 
 /* ---------- 404 ---------- */
@@ -1570,7 +1613,7 @@ html.js-motion .method-step.is-lit {
 .notfound p {
   max-width: 52ch;
   margin-top: 20px;
-  color: rgba(247, 243, 235, 0.74);
+  color: rgba(247, 243, 235, 0.8);
   font-size: clamp(1rem, 1.5vw, 1.14rem);
   line-height: 1.75;
 }
