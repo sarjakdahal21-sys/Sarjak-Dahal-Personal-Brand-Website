@@ -1651,3 +1651,19 @@ html.js-motion .method-step.is-lit {
   line-height: 1.75;
 }
 
+
+/* Inline credential links in the About text: gold pen underline, small arrow */
+.story-link {
+  color: inherit;
+  text-decoration: underline;
+  text-decoration-color: var(--brass);
+  text-decoration-thickness: 1.5px;
+  text-underline-offset: 4px;
+  transition: color 0.2s var(--ease), text-decoration-color 0.2s var(--ease);
+}
+
+.story-link:hover,
+.story-link:focus-visible {
+  color: #7B632B;
+  text-decoration-color: #7B632B;
+}
